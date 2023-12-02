@@ -25,6 +25,8 @@ public class Interactable : MonoBehaviour
         _pressed = true;
         var position = _interactableObject.transform.transform.position;
         _interactableObject.transform.transform.position = new Vector3(position.x, position.y - 0.01f, position.z);
+
+        GameManager.Instance.UpdateGameState(GameManager.GameState.Win);
     }
 
     private void ResetPress()

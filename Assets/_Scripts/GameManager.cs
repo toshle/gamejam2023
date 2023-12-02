@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject _canvasesContainer;
     [SerializeField] private Menu _mainMenuPrefab;
+    [SerializeField] private Win _winMenuPrefab;
     [SerializeField] private CameraController _cameraController;
     [SerializeField] private PlayerController _playerController;
 
@@ -39,15 +40,25 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.MainMenu:
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
                 Instantiate(_mainMenuPrefab, _canvasesContainer.transform);
                 break;
             case GameState.GenerateLevel:
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
                 _playerController.enabled = true;
                 _cameraController.enabled = true;
                 break;
             case GameState.Win:
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+                _playerController.enabled = false;
+                _cameraController.enabled = false;
+                Instantiate(_winMenuPrefab, _canvasesContainer.transform);
                 break;
             case GameState.Lose:
+                Cursor.visible = true;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
