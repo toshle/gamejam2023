@@ -9,6 +9,7 @@ public class Interactable : MonoBehaviour
     [SerializeField] private Collider _triggerCollider;
 
     bool _pressed = false;
+    bool _canBePressed = false;
 
     void Update()
     {
@@ -22,11 +23,13 @@ public class Interactable : MonoBehaviour
 
     private void Press()
     {
-        _pressed = true;
-        var position = _interactableObject.transform.transform.position;
-        _interactableObject.transform.transform.position = new Vector3(position.x, position.y - 0.01f, position.z);
+        if(_canBePressed) {
+            _pressed = true;
+            var position = _interactableObject.transform.transform.position;
+            _interactableObject.transform.transform.position = new Vector3(position.x, position.y - 0.01f, position.z);
 
-        GameManager.Instance.UpdateGameState(GameManager.GameState.Win);
+            GameManager.Instance.UpdateGameState(GameManager.GameState.Win);
+        }
     }
 
     private void ResetPress()
@@ -38,11 +41,13 @@ public class Interactable : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        _canBePressed = true;
         Debug.Log("Button is pressable");
     }
 
     private void OnTriggerExit(Collider other)
     {
+        _canBePressed = false;
         Debug.Log("Button is NOT pressable");
     }
 }

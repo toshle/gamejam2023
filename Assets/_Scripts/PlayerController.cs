@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 {
 
     [SerializeField] public float movementSpeed;
+    [SerializeField] public float sprintSpeed;
     [SerializeField] public float movementDrag;
 
     public float playerHeight;
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode crouchKey = KeyCode.LeftControl;
+    public KeyCode sprintKey = KeyCode.LeftShift;
 
     bool _readyToJump;
 
@@ -30,6 +32,8 @@ public class PlayerController : MonoBehaviour
     float _horizontalInput;
     float _verticalInput;
 
+    float _currentSpeed;
+
     Vector3 _movementDirection;
 
     [SerializeField] Rigidbody _rb;
@@ -38,6 +42,7 @@ public class PlayerController : MonoBehaviour
     {
         _rb.freezeRotation = true;
         _readyToJump = true;
+        _currentSpeed = movementSpeed;
     }
 
     private void FixedUpdate()
@@ -84,6 +89,16 @@ public class PlayerController : MonoBehaviour
         {
             Crouch(false);
         }
+
+
+        if (_grounded && Input.GetKeyDown(sprintKey))
+        {
+            _currentSpeed = sprintSpeed;
+        }
+        if(Input.GetKeyUp(sprintKey))
+        {
+            _currentSpeed = movementSpeed;
+        }
     }
 
     private void Move()
@@ -92,10 +107,10 @@ public class PlayerController : MonoBehaviour
 
         if(_grounded)
         {
-            _rb.AddForce(_movementDirection.normalized * movementSpeed * 10f, ForceMode.Force);
+            _rb.AddForce(_movementDirection.normalized * _currentSpeed * 10f, ForceMode.Force);
         } else if(!_grounded)
         {
-            _rb.AddForce(_movementDirection.normalized * movementSpeed * 10f * airMultiplier, ForceMode.Force);
+            _rb.AddForce(_movementDirection.normalized * _currentSpeed * 10f * airMultiplier, ForceMode.Force);
         }
     }
 
@@ -103,9 +118,9 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 flatVelocity = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z);
 
-        if(flatVelocity.magnitude > movementSpeed)
+        if(flatVelocity.magnitude > _currentSpeed)
         {
-            Vector3 limitedVelocity = flatVelocity.normalized * movementSpeed;
+            Vector3 limitedVelocity = flatVelocity.normalized * _currentSpeed;
             _rb.velocity = new Vector3(limitedVelocity.x, _rb.velocity.y, limitedVelocity.z);
         }
     }

@@ -16,6 +16,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CameraController _cameraController;
     [SerializeField] private PlayerController _playerController;
 
+
+    private Menu _menuInstance;
+    private Win _winMenuInstance;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -42,7 +46,13 @@ public class GameManager : MonoBehaviour
             case GameState.MainMenu:
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
-                Instantiate(_mainMenuPrefab, _canvasesContainer.transform);
+                if(_menuInstance == null)
+                {
+                    _menuInstance = Instantiate(_mainMenuPrefab, _canvasesContainer.transform);
+                } else
+                {
+                    _menuInstance.gameObject.SetActive(true);
+                }
                 break;
             case GameState.GenerateLevel:
                 Cursor.visible = false;
@@ -55,7 +65,14 @@ public class GameManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Confined;
                 _playerController.enabled = false;
                 _cameraController.enabled = false;
-                Instantiate(_winMenuPrefab, _canvasesContainer.transform);
+                if (_winMenuInstance == null)
+                {
+                    _winMenuInstance = Instantiate(_winMenuPrefab, _canvasesContainer.transform);
+                }
+                else
+                {
+                    _winMenuInstance.gameObject.SetActive(true);
+                }
                 break;
             case GameState.Lose:
                 Cursor.visible = true;

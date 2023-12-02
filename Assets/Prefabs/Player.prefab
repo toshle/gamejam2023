@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 7
+  sprintSpeed: 14
   movementDrag: 5
   playerHeight: 2
   whatIsGround:
@@ -89,6 +90,8 @@ MonoBehaviour:
   jumpCooldown: 0.25
   airMultiplier: 0.1
   jumpKey: 32
+  crouchKey: 306
+  sprintKey: 304
   orientation: {fileID: 6609642967585453466}
   _rb: {fileID: 8197900159679249109}
 --- !u!54 &8197900159679249109
