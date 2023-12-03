@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.MainMenu:
+                SoundManager.Instance.PlayAmbientMusic(false);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
                 DisableAI();
@@ -76,6 +77,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case GameState.GenerateLevel:
+                SoundManager.Instance.PlayAmbientMusic(true);
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
                 EnableAI();
@@ -83,6 +85,8 @@ public class GameManager : MonoBehaviour
                 _cameraController.enabled = true;
                 break;
             case GameState.Win:
+                SoundManager.Instance.PlayBattleMusic(true);
+                SoundManager.Instance.PlayAmbientMusic(false);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
                 _playerController.enabled = false;
@@ -98,6 +102,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case GameState.Lose:
+                SoundManager.Instance.PlayAmbientMusic(false);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
                 _playerController.enabled = false;
