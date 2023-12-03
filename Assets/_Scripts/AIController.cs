@@ -32,6 +32,7 @@ public class AIController : MonoBehaviour
     [SerializeField] private Color _detectedLightColor;
     [SerializeField] private Color _alertLightColor;
     [SerializeField] private Color _lightColor;
+    [SerializeField] private Animator _animator;
 
     float _waitTime, _timeToRotate;
     bool _playerInRange, _playerNear, _isPatrol, _caughtPlayer;
@@ -55,8 +56,8 @@ public class AIController : MonoBehaviour
         _isPatroling = true;
         _agent.isStopped = false;
         _agent.speed = _walkSpeed;
-        /*_activated = true;
-        _agent.SetDestination(_waypoints[_currentWaypointIndex].position);*/
+        _activated = true;
+        _agent.SetDestination(_waypoints[_currentWaypointIndex].position);
     }
 
     private void Update()
@@ -95,6 +96,7 @@ public class AIController : MonoBehaviour
     {
         _agent.isStopped = false;
         _agent.speed = speed;
+        _animator.SetBool("Moving", true);
     }
 
     private void Stop()
@@ -123,6 +125,7 @@ public class AIController : MonoBehaviour
             } else
             {
                 //Stop();
+                _animator.SetBool("Moving", false);
                 _waitTime -= Time.deltaTime;
             }
         }
@@ -152,7 +155,7 @@ public class AIController : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
         if (Physics.Raycast(transform.position, dirToPlayer, distanceToPlayer, _playerMask))
         {
-            Debug.DrawRay(transform.position, dirToPlayer, Color.red);
+            //Debug.DrawRay(transform.position, dirToPlayer, Color.red);
             _chasePlayer = true;
             _isPatroling = false;
             _playerLastPosition = player.position;
