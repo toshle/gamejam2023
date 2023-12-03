@@ -40,7 +40,7 @@ public class AIController : MonoBehaviour
 
     bool _goTolastPlayerPosition = false;
     bool _chasePlayer = false;
-    [SerializeField] bool _activated = false;
+    [SerializeField] public bool Activated = false;
     bool _isPatroling = false;
 
     void Start()
@@ -56,13 +56,13 @@ public class AIController : MonoBehaviour
         _isPatroling = true;
         _agent.isStopped = false;
         _agent.speed = _walkSpeed;
-        _activated = true;
+        Activated = true;
         _agent.SetDestination(_waypoints[_currentWaypointIndex].position);
     }
 
     private void Update()
     {
-        if (_activated)
+        if (Activated)
         {
             if (_isPatroling)
             {
@@ -113,6 +113,7 @@ public class AIController : MonoBehaviour
 
     private void Patrol()
     {
+        _animator.SetBool("Running", false);
         _animator.SetBool("Moving", true);
         _agent.isStopped = false;
         _playerLastPosition = Vector3.zero;
@@ -141,6 +142,7 @@ public class AIController : MonoBehaviour
     private void Chase()
     {
         _animator.SetBool("Moving", true);
+        _animator.SetBool("Running", true);
         _agent.isStopped = false;
         Move(_runSpeed);
         _agent.SetDestination(_playerController.transform.position);
@@ -175,6 +177,7 @@ public class AIController : MonoBehaviour
         //float distanceToPlayer = Vector3.Distance(transform.position, player.position);
         if (other.gameObject.GetComponent<PlayerController>() != null)
         {
+            _animator.SetBool("Running", false);
             _light.color = _alertLightColor;
             _chasePlayer = false;
             _isPatroling = false;

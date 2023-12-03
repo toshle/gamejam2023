@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Lose _loseMenuPrefab;
     [SerializeField] private CameraController _cameraController;
     [SerializeField] private PlayerController _playerController;
+    [SerializeField] private GameObject[] _robots;
 
 
     private Menu _menuInstance;
@@ -39,6 +40,22 @@ public class GameManager : MonoBehaviour
         UpdateGameState(GameState.MainMenu);
     }
 
+    private void DisableAI()
+    {
+        foreach( var robot in _robots)
+        {
+            robot.SetActive(false);
+        }
+    }
+
+    private void EnableAI()
+    {
+        foreach (var robot in _robots)
+        {
+            robot.SetActive(true);
+        }
+    }
+
     public void UpdateGameState(GameState newState)
     {
         State = newState;
@@ -48,6 +65,7 @@ public class GameManager : MonoBehaviour
             case GameState.MainMenu:
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.Confined;
+                DisableAI();
                 if(_menuInstance == null)
                 {
                     _menuInstance = Instantiate(_mainMenuPrefab, _canvasesContainer.transform);
@@ -59,6 +77,7 @@ public class GameManager : MonoBehaviour
             case GameState.GenerateLevel:
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
+                EnableAI();
                 _playerController.enabled = true;
                 _cameraController.enabled = true;
                 break;
@@ -67,6 +86,7 @@ public class GameManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Confined;
                 _playerController.enabled = false;
                 _cameraController.enabled = false;
+                DisableAI();
                 if (_winMenuInstance == null)
                 {
                     _winMenuInstance = Instantiate(_winMenuPrefab, _canvasesContainer.transform);
@@ -81,6 +101,7 @@ public class GameManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Confined;
                 _playerController.enabled = false;
                 _cameraController.enabled = false;
+                DisableAI();
                 if (_loseMenuInstance == null)
                 {
                     _loseMenuInstance = Instantiate(_loseMenuPrefab, _canvasesContainer.transform);

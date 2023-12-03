@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 90bb2029a2f46a64796bb4cc08e9f4ba
+guid: ac588464a32523d4ea4fc87e31c7d978
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: metarig|metarigAction.001
-      takeName: metarig|metarigAction.001
-      internalID: -2463781497245029270
+      name: metarig|run
+      takeName: metarig|run
+      internalID: -5297019649661602221
       firstFrame: 0
-      lastFrame: 142
+      lastFrame: 32
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

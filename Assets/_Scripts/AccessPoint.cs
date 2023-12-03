@@ -14,15 +14,37 @@ public class AccessPoint : MonoBehaviour
     [SerializeField] bool _canBePressed = false;
 
     [SerializeField] private bool _active;
+    [SerializeField] private bool _activated = false;
+    [SerializeField] private AccessPoint _nextPoint;
+    [SerializeField] private TMP_Text _orderText;
+    [SerializeField] private GameObject _objectToRemove;
+    private int _index = 0;
     // Start is called before the first frame update
     void Start()
     {
         _loadingImage.fillAmount = 0;
     }
 
+    public void Activate(AccessPoint nextPoint = null)
+    {
+        _nextPoint = nextPoint;
+        _activated = true;
+
+
+    }
+
+    public void ShowActivation(int? order = null)
+    {
+        if(_activated && order != null)
+        {
+            _index = order.Value;
+            _orderText.text = _index.ToString();
+        }
+    }
+
     protected void Update()
     {
-        if (!_completed) { 
+        if (_activated && !_completed) { 
 
             if (_canBePressed && Input.GetKeyDown(KeyCode.E))
             {
@@ -44,7 +66,8 @@ public class AccessPoint : MonoBehaviour
                 {
                     _active = false;
                     _completed = true;
-
+                    if(_nextPoint != null)
+                        _nextPoint.ShowActivation(_index + 1);
                 }
             }
         }
