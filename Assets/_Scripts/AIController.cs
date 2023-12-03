@@ -64,6 +64,10 @@ public class AIController : MonoBehaviour
     {
         if (_activated)
         {
+            if (_isPatroling)
+            {
+                Patrol();
+            }
             if (_chasePlayer)
             {
                 Chase();
@@ -79,10 +83,6 @@ public class AIController : MonoBehaviour
                     _isPatroling = true;
                     _light.color = _lightColor;
                 }
-            }
-            if (_isPatroling)
-            {
-                Patrol();
             }
         }
     }
@@ -102,7 +102,7 @@ public class AIController : MonoBehaviour
     private void Stop()
     {
         _agent.isStopped = true;
-        _agent.speed = 0;
+        //_agent.speed = 0;
     }
 
     public void NextPoint()
@@ -113,6 +113,8 @@ public class AIController : MonoBehaviour
 
     private void Patrol()
     {
+        _animator.SetBool("Moving", true);
+        _agent.isStopped = false;
         _playerLastPosition = Vector3.zero;
         _agent.SetDestination(_waypoints[_currentWaypointIndex].position);
         if(_agent.remainingDistance <= _agent.stoppingDistance)
@@ -124,9 +126,9 @@ public class AIController : MonoBehaviour
                 _waitTime = _startWaitTime;
             } else
             {
-                //Stop();
+                Stop();
                 _animator.SetBool("Moving", false);
-                _waitTime -= Time.deltaTime;
+                _waitTime -= Time.deltaTime * 10;
             }
         }
     }
@@ -138,13 +140,15 @@ public class AIController : MonoBehaviour
 
     private void Chase()
     {
+        _animator.SetBool("Moving", true);
+        _agent.isStopped = false;
         Move(_runSpeed);
         _agent.SetDestination(_playerController.transform.position);
 
         if(_agent.remainingDistance <= _agent.stoppingDistance)
         {
             Debug.Log("Caught!");
-            GameManager.Instance.UpdateGameState(GameManager.GameState.Lose);
+            //GameManager.Instance.UpdateGameState(GameManager.GameState.Lose);
         }
     }
 
@@ -153,36 +157,13 @@ public class AIController : MonoBehaviour
         Transform player = other.transform;
         Vector3 dirToPlayer = (player.position - transform.position).normalized;
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        if (Physics.Raycast(transform.position, dirToPlayer, distanceToPlayer, _playerMask))
+        if (other.gameObject.GetComponent<PlayerController>() != null)
         {
-            //Debug.DrawRay(transform.position, dirToPlayer, Color.red);
             _chasePlayer = true;
             _isPatroling = false;
             _playerLastPosition = player.position;
             _light.color = _detectedLightColor;
             Debug.Log("I see you!");
-        }
-        else if (!Physics.Raycast(transform.position, dirToPlayer, distanceToPlayer, _obstacleMask) &&
-                   !Physics.Raycast(transform.position, dirToPlayer, distanceToPlayer, _groundMask))
-        {
-            /*_light.color = _alertLightColor;
-            _chasePlayer = false;
-            _goTolastPlayerPosition = true;
-            _playerLastPosition = player.position;*/
-            Vector3 dirToLastPos = (_playerLastPosition - transform.position).normalized;
-            float distanceToLastPos = Vector3.Distance(transform.position, _playerLastPosition);
-            if (Physics.Raycast(transform.position, dirToLastPos, distanceToLastPos, _playerMask))
-            {
-                _chasePlayer = true;
-                _isPatroling = false;
-                _playerLastPosition = player.position;
-                Debug.Log("Still CHASING PLAYER");
-            }
-            else
-            {
-                _light.color = _lightColor;
-                _chasePlayer = false;
-            }
         }
     }
 
@@ -190,9 +171,9 @@ public class AIController : MonoBehaviour
     {
         //Debug.Log("I DO NOT see you anymoe!");
         Transform player = other.transform;
-        Vector3 dirToPlayer = (player.position - transform.position).normalized;
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        if (Physics.Raycast(transform.position, dirToPlayer, distanceToPlayer, _playerMask))
+        //Vector3 dirToPlayer = (player.position - transform.position).normalized;
+        //float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        if (other.gameObject.GetComponent<PlayerController>() != null)
         {
             _light.color = _alertLightColor;
             _chasePlayer = false;
@@ -205,5 +186,15 @@ public class AIController : MonoBehaviour
         {
             //Debug.Log("NOT PLAYER");
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        if (collision.gameObject.GetComponent<PlayerController>() != null)
+        {
+            GameManager.Instance.UpdateGameState(GameManager.GameState.Lose);
+        }
+
     }
 }

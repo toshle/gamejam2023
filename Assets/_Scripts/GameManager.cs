@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Lose:
                 Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
                 _playerController.enabled = false;
                 _cameraController.enabled = false;
                 if (_loseMenuInstance == null)
