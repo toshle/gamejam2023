@@ -8,12 +8,12 @@ public class Interactable : MonoBehaviour
     [SerializeField] protected GameObject _interactableObject;
     [SerializeField] protected Collider _triggerCollider;
 
-    bool _pressed = false;
-    bool _canBePressed = false;
+    protected bool _pressed = false;
+    protected bool _canBePressed = false;
 
-    void Update()
+    protected virtual void Update()
     {
-        if(!_pressed && Input.GetKey(KeyCode.E))
+        if(_canBePressed && !_pressed && Input.GetKey(KeyCode.E))
         {
             Press();
 
@@ -31,13 +31,10 @@ public class Interactable : MonoBehaviour
 
     }
 
-
     private void Press()
     {
-        if(_canBePressed) {
-            _pressed = true;
-            Activate();
-        }
+        _pressed = true;
+        Activate();
     }
 
     private void ResetPress()
@@ -46,15 +43,20 @@ public class Interactable : MonoBehaviour
         Deactivate();
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
-        _canBePressed = true;
-        Debug.Log("Button is pressable");
+        if(GameObject.FindGameObjectWithTag("Player").transform.position == other.transform.position) { 
+            _canBePressed = true;
+            Debug.Log("Button is pressable");
+        }
     }
 
-    private void OnTriggerExit(Collider other)
+    protected virtual void OnTriggerExit(Collider other)
     {
-        _canBePressed = false;
-        Debug.Log("Button is NOT pressable");
+        if (GameObject.FindGameObjectWithTag("Player").transform.position == other.transform.position)
+        {
+            _canBePressed = false;
+            Debug.Log("Button is NOT pressable");
+        }
     }
 }
