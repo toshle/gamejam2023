@@ -60,6 +60,7 @@ public class AIController : MonoBehaviour
         _agent.SetDestination(_waypoints[_currentWaypointIndex].position);
     }
 
+
     private void Update()
     {
         if (Activated)
@@ -113,6 +114,7 @@ public class AIController : MonoBehaviour
 
     private void Patrol()
     {
+        SoundManager.Instance.PlayBattleMusic(false);
         _animator.SetBool("Running", false);
         _animator.SetBool("Moving", true);
         _agent.isStopped = false;
@@ -146,7 +148,6 @@ public class AIController : MonoBehaviour
         _agent.isStopped = false;
         Move(_runSpeed);
         _agent.SetDestination(_playerController.transform.position);
-
         if(_agent.remainingDistance <= _agent.stoppingDistance)
         {
             Debug.Log("Caught!");
@@ -161,6 +162,7 @@ public class AIController : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
         if (other.gameObject.GetComponent<PlayerController>() != null)
         {
+            SoundManager.Instance.PlayBattleMusic(true);
             _chasePlayer = true;
             _isPatroling = false;
             _playerLastPosition = player.position;
@@ -183,6 +185,7 @@ public class AIController : MonoBehaviour
             _isPatroling = false;
             _goTolastPlayerPosition = true;
             _playerLastPosition = player.position;
+            SoundManager.Instance.PlayBattleMusic(false);
             Debug.Log("PLAYER LEFT");
         }
         else

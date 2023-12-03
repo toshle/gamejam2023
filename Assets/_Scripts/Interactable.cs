@@ -7,6 +7,8 @@ public class Interactable : MonoBehaviour
 {
     [SerializeField] protected GameObject _interactableObject;
     [SerializeField] protected Collider _triggerCollider;
+    [SerializeField] protected AudioSource _buttonAudioSource;
+    [SerializeField] protected AudioClip _buttonAudioClip;
 
     protected bool _pressed = false;
     protected bool _canBePressed = false;

@@ -18,6 +18,9 @@ public class AccessPoint : MonoBehaviour
     [SerializeField] private AccessPoint _nextPoint;
     [SerializeField] private TMP_Text _orderText;
     [SerializeField] public GameObject ObjectToRemove;
+    [SerializeField] private AudioClip _sfx;
+    [SerializeField] private AudioClip _activateSfx;
+    [SerializeField] private AudioSource _fxAudioSource;
     private int _index = 0;
     // Start is called before the first frame update
     void Start()
@@ -49,6 +52,7 @@ public class AccessPoint : MonoBehaviour
             if (_canBePressed && Input.GetKeyDown(KeyCode.E))
             {
                 _active = true;
+                _fxAudioSource.Play();
             }
 
             if (_canBePressed && Input.GetKeyUp(KeyCode.E))
@@ -64,6 +68,8 @@ public class AccessPoint : MonoBehaviour
                 _loadingText.text = ((int)(_loadingImage.fillAmount * 100)).ToString() + "%";
                 if (_loadingImage.fillAmount >= 1)
                 {
+                    _fxAudioSource.clip = null;
+                    _fxAudioSource.PlayOneShot(_activateSfx);
                     _active = false;
                     _completed = true;
                     Destroy(ObjectToRemove);

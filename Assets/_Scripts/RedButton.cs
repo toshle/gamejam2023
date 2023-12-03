@@ -9,6 +9,7 @@ public class RedButton : Interactable
         var position = _interactableObject.transform.transform.position;
         _interactableObject.transform.transform.position = new Vector3(position.x, position.y - 0.01f, position.z);
         GameManager.Instance.UpdateGameState(GameManager.GameState.Win);
+        _buttonAudioSource.PlayOneShot(_buttonAudioClip);
     }
 
     protected override void Deactivate()
