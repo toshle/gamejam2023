@@ -17,7 +17,7 @@ public class AccessPoint : MonoBehaviour
     [SerializeField] private bool _activated = false;
     [SerializeField] private AccessPoint _nextPoint;
     [SerializeField] private TMP_Text _orderText;
-    [SerializeField] private GameObject _objectToRemove;
+    [SerializeField] public GameObject ObjectToRemove;
     private int _index = 0;
     // Start is called before the first frame update
     void Start()
@@ -66,6 +66,7 @@ public class AccessPoint : MonoBehaviour
                 {
                     _active = false;
                     _completed = true;
+                    Destroy(ObjectToRemove);
                     if(_nextPoint != null)
                         _nextPoint.ShowActivation(_index + 1);
                 }

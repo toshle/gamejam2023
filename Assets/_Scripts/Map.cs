@@ -26,6 +26,7 @@ public class Map : MonoBehaviour
                 taken[i].Activate();
                 taken[i].ShowActivation(taken.Count);
             }
+            taken[i].ObjectToRemove = GameManager.Instance._objectsToRemove[i];
         }
     }
 

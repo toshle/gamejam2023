@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CameraController _cameraController;
     [SerializeField] private PlayerController _playerController;
     [SerializeField] private GameObject[] _robots;
+    [SerializeField] public GameObject[] _objectsToRemove;
 
 
     private Menu _menuInstance;
