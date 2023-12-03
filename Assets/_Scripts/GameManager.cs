@@ -13,12 +13,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _canvasesContainer;
     [SerializeField] private Menu _mainMenuPrefab;
     [SerializeField] private Win _winMenuPrefab;
+    [SerializeField] private Lose _loseMenuPrefab;
     [SerializeField] private CameraController _cameraController;
     [SerializeField] private PlayerController _playerController;
 
 
     private Menu _menuInstance;
     private Win _winMenuInstance;
+    private Lose _loseMenuInstance;
 
     void Awake()
     {
@@ -76,6 +78,16 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Lose:
                 Cursor.visible = true;
+                _playerController.enabled = false;
+                _cameraController.enabled = false;
+                if (_loseMenuInstance == null)
+                {
+                    _loseMenuInstance = Instantiate(_loseMenuPrefab, _canvasesContainer.transform);
+                }
+                else
+                {
+                    _loseMenuInstance.gameObject.SetActive(true);
+                }
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);

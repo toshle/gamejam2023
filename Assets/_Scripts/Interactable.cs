@@ -5,8 +5,8 @@ using UnityEngine.UIElements;
 
 public class Interactable : MonoBehaviour
 {
-    [SerializeField] private GameObject _interactableObject;
-    [SerializeField] private Collider _triggerCollider;
+    [SerializeField] protected GameObject _interactableObject;
+    [SerializeField] protected Collider _triggerCollider;
 
     bool _pressed = false;
     bool _canBePressed = false;
@@ -21,22 +21,29 @@ public class Interactable : MonoBehaviour
         }
     }
 
+    protected virtual void Activate()
+    {
+
+    }
+
+    protected virtual void Deactivate()
+    {
+
+    }
+
+
     private void Press()
     {
         if(_canBePressed) {
             _pressed = true;
-            var position = _interactableObject.transform.transform.position;
-            _interactableObject.transform.transform.position = new Vector3(position.x, position.y - 0.01f, position.z);
-
-            GameManager.Instance.UpdateGameState(GameManager.GameState.Win);
+            Activate();
         }
     }
 
     private void ResetPress()
     {
         _pressed = false;
-        var position = _interactableObject.transform.transform.position;
-        _interactableObject.transform.transform.position = new Vector3(position.x, position.y + 0.01f, position.z);
+        Deactivate();
     }
 
     private void OnTriggerEnter(Collider other)

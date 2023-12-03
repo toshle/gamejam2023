@@ -221,9 +221,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5479913596124846201}
-  - component: {fileID: 9101041283863790317}
   - component: {fileID: 2004329519268297502}
   - component: {fileID: 8977475110813975210}
+  - component: {fileID: 4231590050462275371}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -249,20 +249,6 @@ Transform:
   - {fileID: 3132649036744868053}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9101041283863790317
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1730743158533109037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a9c157478f5b964dbc2718397d326f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactableObject: {fileID: 1221305604087756823}
-  _triggerCollider: {fileID: 2004329519268297502}
 --- !u!65 &2004329519268297502
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -380,6 +366,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4231590050462275371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730743158533109037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10501faa72024534abcee838f155665f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactableObject: {fileID: 1730743158533109037}
+  _triggerCollider: {fileID: 2004329519268297502}
 --- !u!1 &2484531581095893353
 GameObject:
   m_ObjectHideFlags: 0
